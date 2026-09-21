@@ -25,7 +25,7 @@
 
 | 1. Beranda (Home Page) | 2. Eksplor (Category Page) | 3. Detail (Detail Page) |
 | :---: | :---: | :---: |
-| ![Home Screen](assets/stitch_wireframes/01_Home_Screen.png) | ![Category Screen](assets/stitch_wireframes/02_Category_Explore_Screen.png) | ![Detail Screen](assets/stitch_wireframes/03_Detail_Screen_Gunung_Bromo.png) |
+| ![Home Screen](https://raw.githubusercontent.com/nailulgh/UTS_LokaNusantara_App/refs/heads/main/assets/figma/home_page.png) | ![Category Screen](https://raw.githubusercontent.com/nailulgh/UTS_LokaNusantara_App/refs/heads/main/assets/figma/eksplor_page.png) | ![Detail Screen](https://raw.githubusercontent.com/nailulgh/UTS_LokaNusantara_App/refs/heads/main/assets/figma/detail_page.png) |
 
 ---
 
