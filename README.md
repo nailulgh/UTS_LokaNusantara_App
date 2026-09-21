@@ -1,170 +1,171 @@
 # 🌿 LokaNusantara: Aplikasi Rekomendasi Destinasi Wisata & Kuliner Lokal (Malang Raya & Kota Batu)
 
 > **Proyek Ujian Tengah Semester (UTS) - Praktikum Mobile Programming**  
+> **Mata Kuliah:** Mobile Programming  
 > **Semester:** Ganjil 2025/2026  
 > **Framework:** Flutter (Dart SDK ^3.13.2 / Flutter 3.47+)  
 > **Arsitektur:** Clean Architecture (Model-View-Data/Assets)  
-> **Design System:** Stitch MCP Design System (Emerald Teal `#0D9488` & Warm Amber `#F59E0B`)
+> **Design System:** Figma And Google Stitch MCP Design System (Emerald Teal `#0D9488`, Warm Amber `#F59E0B`, Terracotta `#C36D4B`)
 
 ---
 
-## 📌 1. Deskripsi & Tujuan Aplikasi
+## 📌 1. Deskripsi & Tujuan Proyek
 
-**LokaNusantara** adalah aplikasi mobile berbasis Flutter yang dirancang untuk memberikan rekomendasi komprehensif mengenai destinasi wisata (alam, budaya, sejarah, wahana rekreasi) dan kuliner lokal legendaris di kawasan Malang Raya dan Kota Wisata Batu, Jawa Timur.
+**LokaNusantara** adalah aplikasi mobile cerdas berbasis Flutter yang dirancang untuk memberikan rekomendasi komprehensif mengenai destinasi wisata unggulan (wisata alam, cagar budaya/sejarah, wahana rekreasi keluarga) serta kuliner legendaris otentik di wilayah Malang Raya dan Kota Wisata Batu, Jawa Timur.
 
-Aplikasi ini bertujuan untuk:
-1. Mempermudah wisatawan dan warga lokal menjelajahi destinasi wisata dan warisan kuliner otentik dengan informasi yang terstruktur, akurat, dan konkret.
-2. Menyajikan informasi vital seperti **estimasi harga tiket/makanan**, **jam operasional**, **titik koordinat GPS presisi**, **fasilitas unggulan**, hingga **ulasan pengunjung**.
-3. Menerapkan seluruh konsep dasar hingga lanjutan yang diajarkan pada **Modul 01 hingga Modul 13** Praktikum Mobile Programming (Layouting, Routing, Argument Passing, State Management, JSON Serialization, hingga Geolocation).
+### Tujuan Utama Aplikasi:
+1. **Pemandu Wisata & Kuliner Konkret:** Menyajikan data konkret 16 destinasi nyata yang terverifikasi (harga tiket, jam buka, fasilitas, ulasan, foto, dan koordinat GPS presisi).
+2. **Pengalaman Pengguna (UX) Minimalis & Modern:** Mengadopsi prinsip desain antarmuka bersih (*clean interface*), bernafas (*breathing whitespace*), dan berkontras tinggi agar mudah dibaca di luar ruangan.
+3. **Penerapan Kurikulum Praktikum Modul 01 - 13:** Seluruh fitur dan kode sumber disusun secara terstruktur untuk mengimplementasikan materi praktikum secara nyata dan mudah dipelajari.
 
 ---
 
-## 📱 2. Tampilan Antarmuka & Wireframe (Stitch MCP)
+## 📱 2. Tampilan Antarmuka & Wireframe (Figma MCP)
 
-Desain antarmuka telah dirancang secara presisi menggunakan **Google Stitch MCP** dengan filosofi *Modern Minimalist & Clean Aesthetics*.
 
-| Halaman 1: Beranda (Home) | Halaman 2: Eksplor (Category) | Halaman 3: Detail (Gunung Bromo) |
+| 1. Beranda (Home Page) | 2. Eksplor (Category Page) | 3. Detail (Detail Page) |
 | :---: | :---: | :---: |
 | ![Home Screen](assets/stitch_wireframes/01_Home_Screen.png) | ![Category Screen](assets/stitch_wireframes/02_Category_Explore_Screen.png) | ![Detail Screen](assets/stitch_wireframes/03_Detail_Screen_Gunung_Bromo.png) |
 
-*Aset tangkapan layar beresolusi tinggi tersedia di folder:* `assets/stitch_wireframes/` *dan* `assets/images/ui_ux_mockup.jpg`.
+---
+
+## 🗂️ 3. Struktur Proyek (Project Structure)
+
+```text
+UTS_Aplikasi_Rekomendasi_Destinasi_Wisata_Kuliner_Lokal/
+├── assets/
+│   ├── data/
+│   │   └── destinations.json         # 16 Data konkret destinasi Malang & Batu
+│   └── figma/                        # Aset PNG  
+│       ├── home_page.png
+│       ├── eksplor_page.png
+│       ├── saved_page.png
+│       ├── profile_page.png
+│       ├── detail_page.png
+│       ├── mockup.png
+│       └── desain_system.png
+├── lib/
+│   ├── assets/
+│   │   └── data/
+│   │       └── destinations.json     # Backup aset data lokal
+│   ├── models/
+│   │   └── destination_model.dart    # Model Class Dart (fromJson, toJson, copyWith)
+│   ├── views/
+│   │   ├── home_page.dart            # Beranda, GPS, Search & Carousel
+│   │   ├── profile_page.dart         # Menampilkan Profil 
+│   │   ├── saved_page.dart           # Menyimpan Destinasi Favorit
+│   │   ├── category_page.dart        # Filter Kategori & Sort Card Feed
+│   │   └── detail_page.dart          # Hero Banner, Stats, GPS Card & CTA
+│   └── main.dart                     # Inisialisasi tema & Named Routes
+├── test/
+│   └── widget_test.dart              # Pengujian unit/smoke test widget
+├── pubspec.yaml                      # Konfigurasi dependensi & aset proyek
+└── README.md                         # Dokumentasi panduan utama proyek
+```
 
 ---
 
-## 🚀 3. Langkah-Langkah Menjalankan Aplikasi
+## 📑 4. Rincian Halaman dan Fungsinya
 
-### A. Prasyarat Sistem (Prerequisites)
-1. **Flutter SDK** versi 3.16+ (disarankan Flutter versi terbaru).
-2. **Android Studio** atau **VS Code** dengan plugin Flutter & Dart terpasang.
-3. Perangkat Android fisik dengan mode *USB Debugging* aktif atau Emulator Android (AVD).
+### 1. `HomePage` (`lib/views/home_page.dart`)
+* **Header Bar GPS Interaktif (Modul 12):** Menampilkan posisi geografis pengguna (*Klojen, Kota Malang*) dengan tombol penyegaran lokasi.
+* **Search Input (Modul 10):** Kolom pencarian dinamis yang memfilter nama tempat, kecamatan, kota, dan kategori secara real-time.
+* **Category Chips Selector (Modul 02 & 06):** Deretan filter horizontal berkategori (*Semua, Wisata Alam, Budaya & Edukasi, Wahana Rekreasi, Kuliner Legendaris, Kafe & Santai*).
+* **Featured Destinations Carousel (Modul 04 & 05):** Kartu horizontal destinasi bertaraf rating tertinggi dengan foto visual, rating emas, harga tiket, dan tombol simpan favorit (Modul 09).
+* **Kuliner Legendaris List (Modul 06):** Daftar kuliner otentik vertikal dengan waktu buka, kisaran harga, dan rating.
+* **Bottom Navigation Bar (Modul 04 & 05):** Navigasi 4 tab (*Beranda, Eksplor, Disimpan, Akun*).
 
-### B. Langkah Instalasi & Eksekusi
+### 2. `CategoryPage` (`lib/views/category_page.dart`)
+* **Top App Bar dengan Navigator.pop (Modul 07):** Navigasi kembali ke beranda.
+* **Category Chips dengan Badge Counter:** Menghitung otomatis jumlah destinasi per kategori (*Semua (16), Wisata Alam (4), Kuliner Legendaris (5), dll.*).
+* **Opsi Pengurutan (Sorting):** Menyaring destinasi berdasarkan *Populer (Ulasan terbanyak)*, *Harga Terendah*, atau *Rating > 4.6*.
+* **Feed Kartu Destinasi (Modul 05 & 06):** Menggunakan `ListView.builder` untuk menampilkan kartu lengkap dengan thumbnail, tag kategori, tombol bookmark, dan tombol *"Lihat Detail"*.
 
-1. **Buka Terminal / Command Prompt** pada direktori proyek:
+### 3. `DetailPage` (`lib/views/detail_page.dart`)
+* **Argument Passing (Modul 08):** Menerima objek utuh `DestinationModel` dari halaman sebelumnya melalui `ModalRoute.of(context)!.settings.arguments`.
+* **Hero Photography Banner (Modul 10):** Foto lanskap berukuran 320px dengan tombol kembali melayang.
+* **Interactive Bookmark Toggle (Modul 09):** Mengubah status favorit destinasi secara dinamis dengan pembaruan instan dan notifikasi `SnackBar`.
+* **Quick Stats Box (Modul 03, 04, 05):** 3 kotak metrik sejajar: ⭐ *Rating (4.9)*, 🕒 *Jam Buka (24 Jam)*, dan 📍 *Kecamatan/Kota*.
+* **Fasilitas & Layanan:** Tag chips representatif (*Sewa Jeep 4x4, Kuda, Musholla, Spot Sunrise, dll.*).
+* **GPS Coordinates & Map Integration Card (Modul 12):** Menampilkan koordinat garis lintang & bujur presisi serta tombol integrasi Google Maps.
+* **Fixed Bottom Action Bar (Modul 04):** Ringkasan tiket/biaya dan tombol aksi utama *"Petunjuk Arah"*.
+
+### 4. `SavedPage` (`lib/views/saved_page.dart`) - *Halaman Disimpan / Favorit*
+* **Koleksi Favorit Reaktif (Modul 09):** Menampilkan seluruh destinasi wisata dan kuliner yang telah disimpan oleh pengguna.
+* **Filter Kategori Cepat:** Chip horizontal untuk menyaring koleksi disimpan (*Semua, Wisata Alam, Kuliner*).
+* **Manajemen State Dinamis:** Menghapus item dari daftar favorit secara langsung dengan tombol hapus/batal dan pembaruan instan (*Modul 09, 13*).
+* **Empty State Estetik:** Tampilan visual ramah saat belum ada destinasi yang disimpan, disertai tombol jalan pintas untuk mulai menjelajah.
+
+### 5. `ProfilePage` (`lib/views/profile_page.dart`) - *Halaman Akun & Profil Mahasiswa*
+* **Header Kartu Mahasiswa (Modul 05):** Menampilkan foto profil dengan border aksen Emerald Teal, nama lengkap (**Muhammad Nailul Ghufron Majid**), NIM (**240605110160**), dan badge resmi kampus **🎓 UIN Maulana Malik Ibrahim Malang**.
+* **Quick Stat Row (Modul 04 Expanded):** 3 box metrik sejajar: *Disimpan*, *12 Dikunjungi*, dan *8 Ulasan*.
+* **Menu Pengaturan & Praktikum:**
+    * *Koleksi Favorit Saya* (jalan pintas ke tab Disimpan).
+    * *Status Lokasi GPS Aktif* (Modul 12, menampilkan *Klojen, Kota Malang*).
+    * *Dialog Catatan Modul Praktikum 01-13* (daftar verifikasi penyelesaian seluruh modul).
+    * *Tentang Aplikasi LokaNusantara* (v1.0.0 UTS Mobile Programming).
+    * *Dialog Konfirmasi Reset Data* (Modul 13).
+
+---
+
+## 🎨 5. Design System Tokens (Stitch Canvas)
+
+* **Palet Warna:**
+    * **Primary (Emerald Teal):** `#0D9488`
+    * **Primary Dark:** `#0F766E`
+    * **Primary Light / Tint:** `#CCFBF1`
+    * **Secondary / Accent (Warm Amber):** `#F59E0B`
+    * **Tertiary (Terracotta):** `#C36D4B`
+    * **Surface:** `#FFFFFF`
+    * **Background:** `#F8FAFC`
+    * **Border:** `#E2E8F0`
+    * **Text Primary:** `#0F172A`
+    * **Text Muted:** `#64748B`
+    * **Favorite Red:** `#EF4444`
+* **Tipografi:** Plus Jakarta Sans / Poppins (Display 22-24sp bold, Headline 16-18sp semibold, Body 13-14sp regular, Caption 10-12sp medium).
+
+---
+
+## 🚀 6. Cara Menjalankan Aplikasi
+
+### A. Prasyarat (Prerequisites)
+* Flutter SDK (versi 3.16+ atau 3.47+).
+* Android Studio / VS Code dengan plugin Flutter terpasang.
+* Emulator Android (AVD) atau Smartphone Android fisik dengan USB Debugging aktif.
+
+### B. Langkah Eksekusi
+
+1. **Buka Terminal pada direktori proyek:**
    ```bash
-   cd C:\Users\nailul\Documents\android_studio_projects\UTS_Aplikasi_Rekomendasi_Destinasi_Wisata_Kuliner_Lokal
+   cd C:\Users\nailul\Documents\android_studio_projects\uts_lokanusantara_app
    ```
 
-2. **Unduh Dependensi Proyek**:
+2. **Periksa kelengkapan dependensi:**
    ```bash
    flutter pub get
    ```
 
-3. **Periksa Integritas Kode (Linter & Static Analysis)**:
+3. **Verifikasi kesehatan kode program:**
    ```bash
    flutter analyze
    ```
-   *(Hasil yang diharapkan: `No issues found!`)*
+   *(Hasil pengujian: No issues found! 0 errors, 0 warnings)*
 
-4. **Jalankan Unit & Widget Test**:
+4. **Jalankan tes otomatis:**
    ```bash
    flutter test
    ```
-   *(Hasil yang diharapkan: `All tests passed!`)*
+   *(Hasil pengujian: All tests passed!)*
 
-5. **Jalankan Aplikasi ke Perangkat/Emulator**:
+5. **Jalankan aplikasi pada emulator atau perangkat fisik:**
    ```bash
    flutter run
    ```
 
 ---
 
-## 📂 4. Struktur Folder & Kode Program
-
-Arsitektur direktori disusun rapi, modular, dan terorganisasi:
-
-```text
-UTS_Aplikasi_Rekomendasi_Destinasi_Wisata_Kuliner_Lokal/
-├── assets/
-│   ├── data/
-│   │   └── destinations.json         # Berkas data konkret lokal (16 tempat nyata Malang Raya)
-│   ├── images/
-│   │   └── ui_ux_mockup.jpg          # Mockup visual 3 layar untuk lampiran Bab 3
-│   └── stitch_wireframes/            # Aset gambar & HTML hasil ekspor Stitch MCP
-│       ├── 01_Home_Screen.png
-│       ├── 02_Category_Explore_Screen.png
-│       └── 03_Detail_Screen_Gunung_Bromo.png
-├── lib/
-│   ├── main.dart                     # Entry point, konfigurasi Tema global & Named Routes (Modul 01, 07)
-│   ├── models/
-│   │   └── destination_model.dart    # Model Class + factory fromJson & toJson (Modul 10, 13)
-│   └── views/
-│       ├── home_page.dart            # Halaman 1: Beranda + Header GPS + Carousel + Filter (Modul 02-12)
-│       ├── category_page.dart        # Halaman 2: Eksplor & Filter Kategori + Sort (Modul 05, 06)
-│       └── detail_page.dart          # Halaman 3: Detail Destinasi + GPS Card + Bookmark (Modul 08, 09, 12)
-├── test/
-│   └── widget_test.dart              # Pengujian otomatis widget aplikasi
-├── pubspec.yaml                      # Konfigurasi dependensi dan registrasi folder assets/
-└── README.md                         # Dokumentasi utama proyek UTS
-```
-
----
-
-## 📖 5. Daftar Halaman & Fungsionalitas Teknis
-
-### 1. `lib/views/home_page.dart` (Halaman Beranda)
-* **Header GPS Terkini (Modul 12):** Menampilkan pill lokasi pengguna (`Klojen, Kota Malang`) yang dapat diketuk untuk menyinkronkan status lokasi GPS secara interaktif.
-* **Hero Greeting & Search Bar (Modul 10):** Input pencarian *real-time* berbasis `TextField` dengan filter nama tempat, kota, kecamatan, dan kategori secara dinamis.
-* **Filter Kategori Horizontal (Modul 02 & 06):** Deretan chip horizontal berkategori (*Semua, Wisata Alam, Budaya & Edukasi, Wahana Rekreasi, Kuliner Legendaris, Kafe & Santai*) yang mengupdate daftar secara langsung.
-* **Carousel Destinasi Populer (Modul 04, 05, 06):** Horizontal `ListView.builder` berisi kartu bersudut lengkung (`Card` + `ClipRRect`) lengkap dengan badge rating emas (`★ 4.9`), badge kategori, harga tiket, dan tombol toggle bookmark favorit.
-* **Feed Kuliner Legendaris (Modul 05 & 06):** Daftar vertikal kuliner khas (Bakso President, Rawon Nguling, Toko Oen, Pos Ketan) dengan jam operasional dan rentang harga.
-* **Bottom Navigation Bar (Modul 04 & 05):** Bilah navigasi bawah 4 tab (*Beranda, Eksplor, Disimpan, Akun*) dengan indikator aktif Emerald Teal.
-
-### 2. `lib/views/category_page.dart` (Halaman Eksplor & Kategori)
-* **Filter Tab & Sort Option:** Tombol pilah berdasarkan *Populer*, *Harga Terendah*, atau *Rating > 4.7*.
-* **Counter Dinamis:** Menghitung dan menampilkan jumlah destinasi yang cocok dengan filter saat ini.
-* **Vertical Feed Cards:** Menampilkan kartu item wisata/kuliner dengan informasi lengkap, jarak, rating, harga, dan tombol buka detail.
-
-### 3. `lib/views/detail_page.dart` (Halaman Detail Informasi)
-* **Penerimaan Objek Navigasi (Modul 08):** Mengakses data destinasi melalui `ModalRoute.of(context)!.settings.arguments as DestinationModel`.
-* **Hero Image Banner (Modul 10):** Foto lanskap beresolusi tinggi 320px dengan tombol kembali melayang (`Navigator.pop()`).
-* **Interactive Bookmark Toggle (Modul 09):** Tombol simpan favorit reaktif menggunakan `setState()` dan notifikasi melayang `SnackBar`.
-* **Quick Stats Box (Modul 03, 04, 05):** 3 kotak metrik sejajar: ⭐ Rating, 🕒 Jam Operasional, dan 📍 Wilayah.
-* **Fasilitas & Layanan:** Tag chip informatif fasilitas (Sewa Jeep, Kuda, Musholla, WiFi, Spot Foto).
-* **Card Koordinat GPS (Modul 12):** Menampilkan nilai Latitude & Longitude konkret dan tombol integrasi Google Maps.
-* **Bottom Floating CTA:** Tombol penuh warna Emerald Teal *"Petunjuk Arah"* untuk panduan rute perjalanan.
-
----
-
-## 🧩 6. Matriks Pemenuhan Modul Praktikum 01 - 13
-
-Aplikasi ini secara khusus dirancang untuk mengintegrasikan setiap konsep yang dipelajari pada modul praktikum:
-
-| No | Modul Praktikum | Implementasi pada Kode Program |
-| :---: | :--- | :--- |
-| **01** | Setup & Struktur Flutter | Inisialisasi arsitektur bersih di `lib/main.dart` dengan StatelessWidget root `LokaNusantaraApp`. |
-| **02** | Widget Row dan Column | Tata letak horizontal (bintang rating, harga, ikon) dan vertikal (konten kartu) pada `home_page.dart`. |
-| **03** | Layout Alignment & Spacing | Distribusi spasi presisi `MainAxisAlignment.spaceBetween` dan `CrossAxisAlignment.start` pada seluruh widget. |
-| **04** | Flexible dan Expanded | Menjaga proporsi elemen baris agar responsif di semua ukuran layar tanpa *RenderFlex overflow*. |
-| **05** | SizedBox, Spacer, dan Card | Penggunaan `Card` dengan elevasi halus, sudut melengkung `BorderRadius.circular(16)`, dan jarak teratur via `SizedBox`. |
-| **06** | ListView.builder & GridView | Pemuatan data dinamis secara *lazy loading* pada feed destinasi populer horizontal dan list kuliner vertikal. |
-| **07** | Navigasi & Named Routes | Registrasi kamus rute terpusat (`routes:`) pada `MaterialApp` dan navigasi via `Navigator.pushNamed`. |
-| **08** | Passing Argument Named Route | Pengiriman objek `DestinationModel` lengkap dari Home/Category ke `DetailPage` via `arguments`. |
-| **09** | StatefulWidget & setState() | Pengelolaan state dinamis pada input pencarian, seleksi kategori aktif, dan interaksi tombol bookmark/love. |
-| **10** | JSON Serialization & FutureBuilder | Deserialisasi data lokal `destinations.json` menjadi objek Dart via constructor `factory DestinationModel.fromJson`. |
-| **11** | Arsitektur Reactive State | Pemisahan tegas antara logika data (`models/`), berkas aset (`assets/data/`), dan tampilan antarmuka (`views/`). |
-| **12** | Akses Lokasi GPS & Geocoding | Header bar GPS penunjuk lokasi (`Klojen, Kota Malang`), kartu koordinat (Latitude & Longitude), dan tombol peta. |
-| **13** | Model Data REST API-ready | Struktur model dan parser data yang dirancang siap pakai saat nanti dihubungkan ke server HTTP eksternal. |
-
----
-
-## 🎨 7. Design System Tokens (Stitch)
-
-* **Primary Brand:** `#0D9488` (Emerald Teal)
-* **Primary Dark:** `#0F766E` (Deep Teal)
-* **Primary Light:** `#CCFBF1` (Soft Teal Tint)
-* **Secondary / Accent:** `#F59E0B` (Warm Amber - Rating bintang emas)
-* **Background Canvas:** `#F8FAFC` (Clean Slate)
-* **Surface Card:** `#FFFFFF` (Pure White)
-* **Border:** `#E2E8F0` (Subtle Outline)
-* **Text Primary:** `#0F172A` (Kontras tinggi)
-* **Text Muted:** `#64748B` (Keterangan & label)
-* **Favorite Red:** `#EF4444` (Aksen hati/bookmark aktif)
-
----
-
 ## 👨‍💻 Identitas Pengembang
-* **Nama:** Muhammad Nailul Ghufron Majid
+* **Nama Mahasiswa:** Muhammad Nailul Ghufron Majid
 * **NIM:** 240605110160
 * **Mata Kuliah:** Praktikum Mobile Programming
-* **Program Studi:** Teknik Informatika
+* **Institusi:** UIN Maulana Malik Ibrahim Malang
